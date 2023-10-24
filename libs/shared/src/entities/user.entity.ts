@@ -1,5 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToMany,
+} from 'typeorm';
 import { FriendRequestEntity } from './friend-request.entity';
+import { ConversationEntity } from './conversation.entity';
+import { MessageEntity } from './message.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -29,4 +37,13 @@ export class UserEntity {
     (FriendRequestEntity) => FriendRequestEntity.receiver,
   )
   friendRequestReceiver: FriendRequestEntity[];
+
+  @ManyToMany(
+    () => ConversationEntity,
+    (conversationEntity) => conversationEntity.users,
+  )
+  conversations: ConversationEntity[];
+
+  @OneToMany(() => MessageEntity, (messageEntity) => messageEntity.user)
+  messages: MessageEntity[];
 }

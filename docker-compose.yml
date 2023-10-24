@@ -87,5 +87,23 @@ services:
       - /usr/src/app/node_modules
     command: npm run start:dev presence 
 
+  chat:
+    build:
+      context: ./
+      dockerfile: ./apps/chat/Dockerfile
+    ports:
+      - '7000:7000'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redis
+      - presence
+    volumes:
+      - .:/usr/src/app 
+      - /usr/src/app/node_modules
+    command: npm run start:dev chat 
+
 
 
